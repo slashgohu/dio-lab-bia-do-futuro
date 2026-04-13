@@ -2,8 +2,6 @@
 
 ## Dados Utilizados
 
-Descreva se usou os arquivos da pasta `data`, por exemplo:
-
 | Arquivo | Formato | Utilização no Agente |
 |---------|---------|---------------------|
 | `historico_atendimento.csv` | CSV | Contextualizar interações anteriores |
@@ -11,36 +9,52 @@ Descreva se usou os arquivos da pasta `data`, por exemplo:
 | `produtos_financeiros.json` | JSON | Sugerir produtos adequados ao perfil |
 | `transacoes.csv` | CSV | Analisar padrão de gastos do cliente |
 
-> [!TIP]
-> **Quer um dataset mais robusto?** Você pode utilizar datasets públicos do [Hugging Face](https://huggingface.co/datasets) relacionados a finanças, desde que sejam adequados ao contexto do desafio.
-
 ---
 
 ## Adaptações nos Dados
 
-> Você modificou ou expandiu os dados mockados? Descreva aqui.
-
-[Sua descrição aqui]
+Foi adicionado 'Fundo Imobiliário' ao dataset de produtos_imobiliarios.
 
 ---
 
 ## Estratégia de Integração
 
 ### Como os dados são carregados?
-> Descreva como seu agente acessa a base de conhecimento.
 
-[ex: Os JSON/CSV são carregados no início da sessão e incluídos no contexto do prompt]
+Injetando os dados no próprio prompt ou carregando os arquivos via código:
+
+```python
+import pandas as pd
+import json
+
+#CSV
+historico = pd.read_csv('data/historico_atendimento')
+transacoes = pd.read_csv('data/transacoes.csv')
+
+#JSON
+with open('ddata/perfil_investidor.json', 'r') as file:
+    perfil = json.load(file)
+
+with open('ddata/produtos_financeiros.json', 'r') as file:
+    produtos = json.load(file)
+```
 
 ### Como os dados são usados no prompt?
-> Os dados vão no system prompt? São consultados dinamicamente?
 
-[Sua descrição aqui]
+Injetamos os dados da seguinte forma em nosso prompt, garantindo que o agente tenha o melhor contexto possivel (em casos mais robustos, o ideal seria carregar os dados via codigo)
+
+DADOS DO CLIENTE =  `data/perfil_investidor.json`
+
+HISTORICO DE TRANSACOES DO CLIENTE = `data/transacoes.csv`
+
+HISTORICO DE ATENDIMENTO DO CLIENTE = `data/historico_atendimento.csv`
+
+PRODUTOS DISPONIVEIS PARA ENSINO = `data/produtos_financeiros.json`
+
 
 ---
 
 ## Exemplo de Contexto Montado
-
-> Mostre um exemplo de como os dados são formatados para o agente.
 
 ```
 Dados do Cliente:
