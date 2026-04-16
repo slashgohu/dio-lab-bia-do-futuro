@@ -27,16 +27,10 @@ Injetando os dados no próprio prompt ou carregando os arquivos via código:
 import pandas as pd
 import json
 
-#CSV
-historico = pd.read_csv('data/historico_atendimento')
+perfil = json.load(open('data/perfil_investidor.json'))
+produtos = json.load(open('data/produtos_financeiros.json'))
 transacoes = pd.read_csv('data/transacoes.csv')
-
-#JSON
-with open('ddata/perfil_investidor.json', 'r') as file:
-    perfil = json.load(file)
-
-with open('ddata/produtos_financeiros.json', 'r') as file:
-    produtos = json.load(file)
+historico = pd.read_csv('data/historico_atendimento.csv')
 ```
 
 ### Como os dados são usados no prompt?
